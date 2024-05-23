@@ -1,25 +1,29 @@
-"use client";
+import Link from "next/link";
 
-import { useState, useEffect } from "react";
+export const metadata = {
+  title: "홈",
+};
 
-// export const metadata = {
-//   title: "홈",
-// };
+export const API_URL = "https://nomad-movies.nomadcoders.workers.dev/movies";
 
-export default function Origin() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
-  const getMovies = async () => {
-    const response = await fetch(
-      "https://nomad-movies.nomadcoders.workers.dev/movies"
-    );
-    const json = await response.json();
-    setMovies(json);
-    setIsLoading(false);
-  };
+async function getMovies() {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const response = await fetch(API_URL);
+  const json = await response.json();
+  console.log("실행");
+  return json;
+}
 
-  useEffect(() => {
-    getMovies();
-  }, []);
-  return <div>{isLoading ? "Loading..." : JSON.stringify(movies)}</div>;
+export default async function HomePage() {
+  // async 컴포넌트 여야 함.
+  const movies = await getMovies();
+  return (
+    <div>
+      {movies.map((movie) => (
+        <li key={movie.id}>
+          <Link href={`movies/${movie.id}`}>{movie.title}</Link>
+        </li>
+      ))}
+    </div>
+  );
 }

@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Movie from "../../components/movie";
+import stlyes from "../../styles/home.module.css";
 
 export const metadata = {
   title: "홈",
@@ -7,7 +8,7 @@ export const metadata = {
 export const API_URL = "https://nomad-movies.nomadcoders.workers.dev/movies";
 
 async function getMovies() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  //await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await fetch(API_URL);
   const json = await response.json();
   console.log("실행");
@@ -18,11 +19,14 @@ export default async function HomePage() {
   // async 컴포넌트 여야 함.
   const movies = await getMovies();
   return (
-    <div>
+    <div className={stlyes.container}>
       {movies.map((movie) => (
-        <li key={movie.id}>
-          <Link href={`movies/${movie.id}`}>{movie.title}</Link>
-        </li>
+        <Movie
+          key={movie.id}
+          id={movie.id}
+          title={movie.title}
+          poster_path={movie.poster_path}
+        />
       ))}
     </div>
   );

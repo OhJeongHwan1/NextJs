@@ -12,7 +12,9 @@ export default function Movie({ id, title, poster_path }) {
   return (
     <div className={styles.movie} key={id}>
       <img src={poster_path} alt={title} onClick={onClick} />
-      <Link href={`movies/${id}`}>{title}</Link>
+      <Link prefetch href={`movies/${id}`}>
+        {title}
+      </Link>
     </div>
   );
 }
